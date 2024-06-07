@@ -12,14 +12,14 @@ const {request} = require('http')
 
 const app = express()
 
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-const httpServer = createServer(app);
-const io = new Server(httpServer, {});
+// const { createServer } = require("http");
+// const { Server } = require("socket.io");
+// const httpServer = createServer(app);
+// const io = new Server(httpServer, {});
 
-io.on("connection", (socket) => {
-    console.log(socket.id); 
-  });
+// io.on("connection", (socket) => {
+//     console.log(socket.id); 
+//   });
 
 const {createPaymentIntent,confirmPayment} = require('./controller/controller_pagamento.js')
 
@@ -764,9 +764,9 @@ app.post('/create-checkout-session/:id', async (req, res) => {
     res.send(result)
 })
 
-httpServer.listen('8080', function(){
-    console.log('API funcionando!')
-})
-// app.listen('8080', function(){
+// httpServer.listen('8080', function(){
 //     console.log('API funcionando!')
 // })
+app.listen('8080', function(){
+    console.log('API funcionando!')
+})
