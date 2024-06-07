@@ -1,5 +1,5 @@
 # Introduction 
- Este projeto visa desenvolver uma aplicação web para gerenciar e controlar os lotes leiloados em um leilão. O objetivo principal é fornecer uma plataforma eficiente e intuitiva para os comitentes, clientes interessados, e funcionários responsáveis pelo leilão.
+ Este projeto visa desenvolver um back end para uma aplicação web que busca gerenciar e controlar os lotes leiloados em um leilão. O objetivo principal é fornecer uma plataforma eficiente e intuitiva para os comitentes, clientes interessados, e funcionários responsáveis pelo leilão.
 
 # Getting Started
 Este guia fornece instruções passo a passo para ajudar os usuários a instalar e executar a aplicação web de leilão em seu próprio sistema:
