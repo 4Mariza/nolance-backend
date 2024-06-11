@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "express build --output public",
+    "build": "npx express build --output public",
     "start": "node app.js"
   },
   "dependencies": {
