@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/8ee045ae-e0c0-46f0-ba1e-d7f0f67ab1ae/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/nolance",
+    "appService.deploySubpath": "."
+}
