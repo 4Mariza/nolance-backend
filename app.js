@@ -440,6 +440,15 @@ app.put('/v1/nolance/interesse/:id', cors(), async (request, response) => {
     response.json(resultInteresseDados)
 })
 
+app.get('/v1/nolance/interessesUsuario/:id', cors(), async (request,response)=>{
+    let idUsuario = request.params.id
+
+    let dadosInteresses = await controllerInteresses.listInteressesByUserId(idUsuario)
+
+    response.status(dadosInteresses.status_code)
+    response.json(dadosInteresses)
+})
+
 /**********************************ENDPOINTS : COMITENTE *********************************************/
 
 app.get('/v1/nolance/comitentes', cors(), async (request, response, next) =>{

@@ -23,6 +23,22 @@ const listInteresses = async () => {
     }
 }
 
+const listInteressesByUserId = async (userId) => {
+    let interessesJSON = {}
+
+    let dadosInteresses = await interesseDAO.selectInterestByUserId(userId)
+
+    if (dadosInteresses) {
+        if (dadosInteresses.length > 0) {
+            interessesJSON.interesses = dadosInteresses
+            interessesJSON.quantidade = dadosInteresses.length
+            interessesJSON.status_code = 200;
+        }
+    } else {
+        return message.ERROR_NOT_FOUND
+    }
+}
+
 const addNewUserInterest = async (dados, contentType) => {
     try {
         if (String(contentType).toLowerCase() == 'application/json') {
@@ -116,5 +132,6 @@ const updateInterest = async (dados, contentType, id) => {
 module.exports = {
     listInteresses,
     addNewUserInterest,
-    updateInterest
+    updateInterest,
+    listInteressesByUserId,
 }
