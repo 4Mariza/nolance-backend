@@ -792,9 +792,6 @@ app.post('/create-checkout-session/:id', async (req, res) => {
     res.send(result)
 })
 
-httpServer.listen('8080', function(){
+httpServer.listen(process.env.PORT || '8080', function(){
     console.log('API funcionando!')
 })
-// app.listen('8080', function(){
-//     console.log('API funcionando!')
-// })
