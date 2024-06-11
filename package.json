@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npm install",
+    "build": "express build --output public",
     "start": "node app.js"
   },
   "dependencies": {
