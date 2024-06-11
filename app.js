@@ -12,14 +12,23 @@ const {request} = require('http')
 
 const app = express()
 
-// const { createServer } = require("http");
-// const { Server } = require("socket.io");
-// const httpServer = createServer(app);
-// const io = new Server(httpServer, {});
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT','DELETE'],
+        allowedHeaders: ['Content-Type']
+    }
+});
 
-// io.on("connection", (socket) => {
-//     console.log(socket.id); 
-//   });
+io.on("connection", (socket) => {
+    console.log('User connected:'+ socket.id); 
+  });
+  io.on('enviar-lance', (lance) =>{
+    socket.broadcast.emit('new-lance', 'alguem deu um lance:' + lance)
+  })
 
 const {createPaymentIntent,confirmPayment} = require('./controller/controller_pagamento.js')
 
@@ -297,6 +306,15 @@ app.delete('/v1/nolance/subcategoria/:id', cors(), async (request, response, nex
 
 app.get('/v1/nolance/users', cors(), async (request, response) => {
     let usersData = await controllerUsuarios.listUsers()
+
+    response.status(usersData.status_code)
+    response.json(usersData)
+})
+
+app.get('/v1/nolance/user/:id', cors(), async (request, response) => {
+
+    let id = request.params.id
+    let usersData = await controllerUsuarios.listUserById(id)
 
     response.status(usersData.status_code)
     response.json(usersData)
@@ -711,7 +729,8 @@ app.post('/v1/nolance/lance', cors(), bodyParserJSON, async (request, response, 
    
 
     let resultDadosLance = await controllerLances.setInserirLance(dadosBody, contentType)
-
+    io.broadcast.emit('new-lance', dadosBody);
+    
     response.status(resultDadosLance.status_code)
     response.json(resultDadosLance)
 
@@ -764,9 +783,9 @@ app.post('/create-checkout-session/:id', async (req, res) => {
     res.send(result)
 })
 
-// httpServer.listen('8080', function(){
-//     console.log('API funcionando!')
-// })
-app.listen('8080', function(){
+httpServer.listen('8080', function(){
     console.log('API funcionando!')
 })
+// app.listen('8080', function(){
+//     console.log('API funcionando!')
+// })
