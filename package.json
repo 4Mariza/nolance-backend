@@ -1,9 +1,4 @@
 {
-  "scripts": {
-    "build": "prisma generate && npx express build --output public",
-    "postinstall": "prisma generate",
-    "start": "node app.js"
-  },
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "cors": "^2.8.5",
