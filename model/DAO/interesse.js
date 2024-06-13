@@ -7,7 +7,7 @@ const selectAllInterests = async function() {
         let sql = `select * from tbl_interesse`
 
         let rsInteresse = await prisma.$queryRawUnsafe(sql)
-
+      console.log(rsInteresse);
         return rsInteresse
 
     }catch(error){

@@ -1,5 +1,5 @@
 const categoriasDAO = require('../model/DAO/categoria.js')
-const usuariosDAO = require('../model/DAO/status.js')
+const usuariosDAO = require('../model/DAO/usuario.js')
 const interesseDAO = require('../model/DAO/interesse.js')
 const message = require('../module/config.js')
 
@@ -27,12 +27,30 @@ const listInteressesByUserId = async (userId) => {
     let interessesJSON = {}
 
     let dadosInteresses = await interesseDAO.selectInterestByUserId(userId)
-
     if (dadosInteresses) {
+
+        for (let index = 0; index < dadosInteresses.length; index++) {
+            const interesse = dadosInteresses[index];
+
+            let dadosCategoria = await categoriasDAO.selectCategoriaById(interesse.categoria_id)
+
+            delete interesse.categoria_id
+            interesse.categoria = dadosCategoria
+
+            let dadosUsuario = await usuariosDAO.selectByIdUser(interesse.usuario_id)
+
+            delete interesse.usuario_id
+            interesse.usuario = dadosUsuario
+
+            delete interesse.usuario[0].senha
+        }
+
         if (dadosInteresses.length > 0) {
             interessesJSON.interesses = dadosInteresses
             interessesJSON.quantidade = dadosInteresses.length
             interessesJSON.status_code = 200;
+
+            return interessesJSON
         }
     } else {
         return message.ERROR_NOT_FOUND
@@ -85,8 +103,7 @@ const updateInterest = async (dados, contentType, id) => {
 
             if (id == '' || id == undefined || isNaN(id) ||
                 dados.categoria_id == '' || dados.categoria_id == undefined || dados.categoria_id == null ||
-                dados.usuario_id == '' || dados.usuario_id == undefined || dados.usuario_id == null || isNaN(dados.usuario_id))
-                 {
+                dados.usuario_id == '' || dados.usuario_id == undefined || dados.usuario_id == null || isNaN(dados.usuario_id)) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
 

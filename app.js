@@ -440,7 +440,7 @@ app.put('/v1/nolance/interesse/:id', cors(), async (request, response) => {
     response.json(resultInteresseDados)
 })
 
-app.get('/v1/nolance/interessesUsuario/:id', cors(), async (request,response)=>{
+app.get('/v1/nolance/interessesusuario/:id', cors(), async (request,response)=>{
     let idUsuario = request.params.id
 
     let dadosInteresses = await controllerInteresses.listInteressesByUserId(idUsuario)
