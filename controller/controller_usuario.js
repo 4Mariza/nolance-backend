@@ -10,15 +10,15 @@ const listUsers = async () => {
 
     let usersData = await usuarioDAO.selectAllUsers()
 
-    if(usersData){
-        if(usersData.length > 0){
+    if (usersData) {
+        if (usersData.length > 0) {
 
-            for(let i = 0; i < usersData.length ; i++){
+            for (let i = 0; i < usersData.length; i++) {
                 let user = usersData[i]
                 let dadosInteresses = []
                 let interesses = await interesseDAO.selectInterestByUserId(user.id)
 
-                for(let contador = 0; contador < interesses.length; contador++){
+                for (let contador = 0; contador < interesses.length; contador++) {
                     let interesse = interesses[contador]
                     delete interesses.usuario_id
 
@@ -28,7 +28,7 @@ const listUsers = async () => {
 
                     user.interesses = dadosInteresses
                 }
-        
+
             }
 
             usersJSON.usuarios = usersData
@@ -43,21 +43,40 @@ const listUsers = async () => {
         return message.ERROR_INTERNAL_SERVER_DB
     }
 }
+const listUserById = async function (userId) {
+    let userJSON = {}
+
+    let userData = await usuarioDAO.selectByIdUser(userId)
+
+    if (userData) {
+        if (userData.length > 0) {
+            let user = userData[0]
+            userJSON.usuarios = user
+            userJSON.status_code = 200;
+
+            return userJSON
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB
+    }
+}
 
 const listUserByLogin = async (email, senha) => {
     let usersJSON = {}
 
     let usersData = await usuarioDAO.selectByLoginUser(email, senha)
 
-    if(usersData){
-        if(usersData.length > 0){
+    if (usersData) {
+        if (usersData.length > 0) {
 
-            for(let i = 0; i < usersData.length ; i++){
+            for (let i = 0; i < usersData.length; i++) {
                 let user = usersData[i]
                 let dadosInteresses = []
                 let interesses = await interesseDAO.selectInterestByUserId(user.id)
 
-                for(let contador = 0; contador < interesses.length; contador++){
+                for (let contador = 0; contador < interesses.length; contador++) {
                     let interesse = interesses[contador]
                     delete interesses.usuario_id
 
@@ -67,7 +86,7 @@ const listUserByLogin = async (email, senha) => {
 
                     user.interesses = dadosInteresses
                 }
-        
+
             }
 
             usersJSON.usuario = usersData
@@ -88,11 +107,11 @@ const addUser = async (dados, contentType) => {
             let newUserJSON = {}
 
             if (dados.nome == '' || dados.nome == undefined || dados.nome == null || dados.nome.length > 100 ||
-                dados.email == ''|| dados.email == undefined|| dados.email == null || dados.email.length > 45 ||
-                dados.senha == '' || dados.senha == undefined || dados.senha == null || dados.senha.length >45 ||
-                dados.telefone == ''|| dados.telefone == undefined || dados.telefone == null || dados.telefone.length > 11||
+                dados.email == '' || dados.email == undefined || dados.email == null || dados.email.length > 45 ||
+                dados.senha == '' || dados.senha == undefined || dados.senha == null || dados.senha.length > 45 ||
+                dados.telefone == '' || dados.telefone == undefined || dados.telefone == null || dados.telefone.length > 11 ||
                 dados.icone == '' || dados.icone == undefined || dados.icone == null || dados.icone.length > 200 ||
-                dados.data_nascimento == ''|| dados.data_nascimento == undefined || dados.data_nascimento == null || dados.data_nascimento.length > 10 ||
+                dados.data_nascimento == '' || dados.data_nascimento == undefined || dados.data_nascimento == null || dados.data_nascimento.length > 10 ||
                 dados.cpf == '' || dados.cpf == undefined || dados.cpf == null || dados.cpf.length > 11
                 // ||dados.endereco_id == '' || dados.endereco_id == undefined || dados.endereco_id == null
             ) {
@@ -118,12 +137,12 @@ const addUser = async (dados, contentType) => {
 
                     return newUserJSON
                 } else {
-                    return message.ERROR_INTERNAL_SERVER_DB 
+                    return message.ERROR_INTERNAL_SERVER_DB
                 }
 
             }
         } else {
-            return message.ERROR_CONTENT_TYPE 
+            return message.ERROR_CONTENT_TYPE
         }
     } catch (error) {
         console.log(error)
@@ -131,22 +150,21 @@ const addUser = async (dados, contentType) => {
     }
 }
 
-const updateUser = async (dados, id , contentType) => {
+const updateUser = async (dados, id, contentType) => {
 
     try {
-        if(String(contentType).toLowerCase() == 'application/json'){
+        if (String(contentType).toLowerCase() == 'application/json') {
             let updatedUserJSON = {}
 
-            if(id == '' || id == undefined || isNaN(id) || 
+            if (id == '' || id == undefined || isNaN(id) ||
                 dados.nome == '' || dados.nome == undefined || dados.nome == null || dados.nome.length > 100 ||
-                dados.email == ''|| dados.email == undefined|| dados.email == null || dados.email.length > 45 ||
-                dados.senha == '' || dados.senha == undefined || dados.senha == null || dados.senha.length >45 ||
-                dados.telefone == ''|| dados.telefone == undefined || dados.telefone == null || dados.telefone.length > 11||
+                dados.email == '' || dados.email == undefined || dados.email == null || dados.email.length > 45 ||
+                dados.senha == '' || dados.senha == undefined || dados.senha == null || dados.senha.length > 45 ||
+                dados.telefone == '' || dados.telefone == undefined || dados.telefone == null || dados.telefone.length > 11 ||
                 dados.icone == '' || dados.icone == undefined || dados.icone == null || dados.icone.length > 200 ||
-                dados.data_nascimento == ''|| dados.data_nascimento == undefined || dados.data_nascimento == null || dados.data_nascimento.length > 10 ||
-                dados.cpf == '' || dados.cpf == undefined || dados.cpf == null || dados.cpf.length > 11||
-                dados.endereco_id == '' || dados.endereco_id == undefined || dados.endereco_id == null)
-                {
+                dados.data_nascimento == '' || dados.data_nascimento == undefined || dados.data_nascimento == null || dados.data_nascimento.length > 10 ||
+                dados.cpf == '' || dados.cpf == undefined || dados.cpf == null || dados.cpf.length > 11 ||
+                dados.endereco_id == '' || dados.endereco_id == undefined || dados.endereco_id == null) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
                 let userId = await usuarioDAO.selectByIdUser(id)
@@ -199,10 +217,11 @@ const deleteUser = async (id) => {
     }
 }
 
-module.exports ={
+module.exports = {
     listUsers,
     listUserByLogin,
     addUser,
     updateUser,
+    listUserById,
     deleteUser
 }
