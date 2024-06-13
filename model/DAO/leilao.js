@@ -79,7 +79,7 @@ const selectLeiloesByCategoria = async function (id) {
 
     const insertNewLeilao = async (dados) => {
         try {
-            let sql = `insert into tbl_leilao (nome, data_inicio, data_final, retirada, imagem, foto_capa, categoria_id, comitente_id, modalidade_id) values
+            let sql = `insert into tbl_leilao (nome, data_inicio, data_final, retirada, foto_capa, categoria_id, comitente_id, modalidade_id) values
                                         ('${dados.nome}','${dados.data_inicio}', '${dados.data_final}', '${dados.retirada}', '${dados.foto_capa}', '${dados.foto_capa}', ${dados.categoria_id}, ${dados.comitente_id}, ${dados.modalidade_id});`
 
             let result = await prisma.$executeRawUnsafe(sql)
